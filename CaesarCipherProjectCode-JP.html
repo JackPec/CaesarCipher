@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+		<title> Caesar Cipher Project </title>
+	
+	
+	<style>
+		body {
+				
+				 border: 10px solid transparent;
+				padding: 15px;
+				text-align: center;
+				background-color: #DEB887;
+				font-family: Georgia, serif;
+			
+
+
+				-webkit-animation-name: example; /* Safari 4.0 - 8.0 */
+				-webkit-animation-duration: 4s; /* Safari 4.0 - 8.0 */
+				animation-name: example;
+				animation-duration: 4;
+				animation-iteration-count: infinite;
+				animation-direction: alternate;
+			}
+
+	
+
+		/* Standard syntax */
+		@keyframes example {
+			from {background-color: tan;}
+			to {background-color: #ed7d28;}
+		}
+		
+		.button {
+			background-color: #4CAF50; /* Green */
+			border: none;
+			color: white;
+			padding: 15px 32px;
+			text-align: center;
+			text-decoration: none;
+			display: inline-block;
+			font-size: 16px;
+			margin: 4px 2px;
+			cursor: pointer;
+		}
+
+		.button2 {background-color: #f44336;} /* Red */ 
+		.button3 {background-color: #008CBA;} /* Blue */
+		.button4 {background-color: #e7e7e7; color: black;} /* Gray */ 
+		.button5 {background-color: #555555;} /* Black */
+	
+	h1 {
+		text-decoration: underline;
+		font-family: Impact;
+	}
+
+	
+	</style>
+
+	<script>
+		var output1 = ""
+		var instructionsVisible = false; 
+		
+		// Code citation:
+		// 		Author: Mozilla Foundation
+		//		Accessed: 10/16/2017
+		//		URL: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random 
+		// 		Purpose: Generate a random integer, n, such that min <= n <= max
+		//Generates a random integer
+		function randomInt(min, max) {		
+			
+			min = Math.ceil(min);
+			max = Math.floor(max);
+			return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive 
+		}
+
+	
+	//Generates a random key for the cipher
+	function randKey(){
+	var randomKey = randomInt(1,25)
+	if (randomKey == randomKey){ //// :|
+	document.getElementById("idSelect").value = randomKey 
+	console.log(randomKey);
+	}
+	}
+	
+	//Main caesarCipher logic, takes the text and selectedKey, checks if the text is a letter and if the selectedKey is positive or negitive
+	//then converts the letter into unicode and either adds or subtracts the number of the unicode by the selectedKey
+	//the unicode value wraps around like a globe if the unicode is over/under the value of the letter a or z 
+	//positive key means encryption, while negitive key means decryption 
+	function caesarCipher(text,selectedKey){
+		output1 = ""
+		var textArray = text.split("");
+		
+		for( var i = 0;i < textArray.length; i++){
+			var temp = textArray[i]
+		//	console.log(temp)
+		
+				if (temp.match(/[a-z]/i)){
+						temp = temp.toUpperCase()
+						temp = temp.charCodeAt(temp) 
+				
+						console.log(temp);
+						console.log(selectedKey);
+				
+					if(selectedKey > 0){
+						temp = String.fromCharCode(((selectedKey - 65 + temp) % 26) + 65);   // positive key
+						temp = temp.toUpperCase()
+					} else if (selectedKey < 0){
+						temp = String.fromCharCode(((selectedKey + 65 + temp) % 26) + 65); // negitive key
+						temp = temp.toLowerCase()
+					}
+					
+					//console.log(temp)
+					output1 += ""+temp+"";
+				
+				
+				} else if(temp != temp.match(/[a-z]/i)){
+					output1 += temp
+				
+				}
+		
+		
+		}
+
+	}
+	
+	
+	
+	//inputs the values from the textarea and selectbox into caesarCipher function and calls to do the logic, then 
+	//outputs the result with the font color of red. 
+	function encryptText(){
+	var selectedKey = document.getElementById("idSelect").value
+	var text = document.getElementById("idtxtInput").value
+	caesarCipher(text,selectedKey)	
+	document.getElementById('idCryptionOutput').innerHTML ='<font color="red">' + output1;
+	}
+	
+	//inputs the values from the textarea and selectbox into caesarCipher function and calls to do the logic, then 
+	//it makes the selectedKey negitive for decryption, and finally outputs the result with the font color of green. 
+	function decryptText(){
+	var selectedKey = document.getElementById("idSelect").value
+	var text = document.getElementById("idtxtInput").value
+	var negkey = selectedKey*-1
+	console.log(negkey);
+	caesarCipher(text,negkey)	
+	document.getElementById('idCryptionOutput').innerHTML = '<font color="green">' + output1;
+	}
+	
+	// Toggles the Instructions, when the button is pressed, the instructions are displayed, when pressed again, the instructions are gone
+	function instructions(){
+		// if instructionsVisible is false, set it to true and display instructions between the <div id="divIdInstructions"></div> tags
+			if(instructionsVisible == false){
+				instructionsVisible = true
+				document.getElementById('divIdInstructions').innerHTML = "Type in the sentence you want to encrypt or decrypt in the textbox,<br> then select the desired value of the key from the selectbox, or click on the random key button,<br> then press the the encryption or decryption buttons for their respected results."
+			} 
+			else 
+			{
+				instructionsVisible = false
+				document.getElementById('divIdInstructions').innerHTML = ""
+			}
+			// else, set instructionsVisible to false and display an empty string between the <div id="divIdInstructions"></div> tags
+			
+	}
+	
+	</script>
+</head>
+<body >
+	<h1> My Caesar Cipher Project - Made by Jack Pec </h1>
+
+		<textarea id="idtxtInput" rows="4" cols="50"></textarea>
+
+	<br> 
+	Key:
+	<select id="idSelect">
+		<option value = "1">1</option>
+		<option value = "2">2</option>
+		<option value = "3">3</option>
+		<option value = "4">4</option>
+		<option value = "5">5</option>	
+		<option value = "6">6</option>
+		<option value = "7">7</option>
+		<option value = "8">8</option>
+		<option value = "9">9</option>
+		<option value = "10">10</option>
+		<option value = "11">11</option>
+		<option value = "12">12</option>
+		<option value = "13">13</option>
+		<option value = "14">14</option>
+		<option value = "15">15</option>	
+		<option value = "16">16</option>
+		<option value = "17">17</option>
+		<option value = "18">18</option>
+		<option value = "19">19</option>
+		<option value = "20">20</option>
+		<option value = "21">21</option>
+		<option value = "22">22</option>
+		<option value = "23">23</option>
+		<option value = "24">24</option>
+		<option value = "25">25</option>		
+	</select>
+	
+	<br><br>
+	
+	<input type="button" button class="button button2" value="Encrypt" onClick = "encryptText()">
+	
+	<input type="button" button class="button button" value="Decrypt" onClick = "decryptText()">
+	
+	<br><br>
+	
+	<input type="button"  button class="button button3" value="Pick a Random Key" onClick = "randKey()">
+	
+	<input type="button" button class="button button4" value="Instructions" onClick = "instructions()">
+	
+	<br><br>
+	<div id="divIdInstructions"></div> 
+	<br><br>
+	<div id="idCryptionOutput"></div>
+	
+	
+</body>
+
+</html>
